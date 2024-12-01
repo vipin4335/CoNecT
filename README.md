@@ -1,8 +1,9 @@
 Login Page Project
-Overview
+
+Overview:
 This project is a Java Spring Boot application designed to check user credentials and provide secure access via JWT authentication. It also includes a Docker configuration to containerize and run the application seamlessly.
 
-Features
+Features:
 Java Spring Boot API for user authentication.
 JWT Token Integration for secure communication.
 Docker Support for containerized deployment.
