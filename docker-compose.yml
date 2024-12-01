@@ -22,7 +22,7 @@ services:
     volumes:
       - postgres-L-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "vipin"]
+      test: [ "CMD", "pg_isready", "-U", "vipin", "-d", "demo" ]
       interval: 10s
       retries: 5
       start_period: 30s

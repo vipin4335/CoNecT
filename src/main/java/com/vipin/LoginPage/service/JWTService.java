@@ -40,7 +40,7 @@ public class JWTService {
                 .setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000)) // 30 minutes expiry
                 .signWith(getKey())
                 .compact();
-
+        System.out.println(token);
         // Create a cookie with the JWT token
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true); // Prevent access to the cookie via JavaScript
