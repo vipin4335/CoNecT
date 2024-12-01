@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - L-network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: vipin
+      POSTGRES_PASSWORD: 8302
+      POSTGRES_DB: demo
+    ports:
+      - "5433:5432"
+    networks:
+      - L-network
+    volumes:
+      - postgres-L-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "vipin"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+networks:
+  L-network:
+    driver: bridge
+
+volumes:
+  postgres-L-data:
