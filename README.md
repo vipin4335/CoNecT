@@ -1,12 +1,12 @@
 Login Page Project
+Overview
+This project is a Java Spring Boot application that implements Spring Security to handle user authentication. It leverages JWT (JSON Web Token) for secure user sessions and returns the token in a cookie for enhanced security. The application is containerized using Docker for seamless deployment.
 
-Overview:
-This project is a Java Spring Boot application designed to check user credentials and provide secure access via JWT authentication. It also includes a Docker configuration to containerize and run the application seamlessly.
-
-Features:
-Java Spring Boot API for user authentication.
-JWT Token Integration for secure communication.
-Docker Support for containerized deployment.
+Features
+Spring Security Integration for robust authentication.
+Generates JWT tokens and stores them in cookies.
+Docker Support for easy deployment.
+Exposes API endpoints for user credential validation.
 Runs on port 8080.
 Setup Instructions
 1. Clone the Repository
@@ -23,9 +23,9 @@ bash
 Copy code
 mvn clean package
 3. Set Up Docker
-Ensure Docker is installed and running. Then use the following commands to set up and run the project in a Docker container:
+Ensure Docker is installed and running. Use the following commands to set up and run the project in a Docker container:
 
-Build and run using Docker Compose:
+Build and run the application using Docker Compose:
 
 bash
 Copy code
@@ -33,25 +33,33 @@ docker-compose up --build
 This will:
 
 Automatically pull the necessary Docker image.
-Set up and run the project on port 8080.
+Set up and run the application on port 8080.
 Accessing the Application
-Once the Docker container is running, you can access the API via:
+The application will be accessible at:
 arduino
 Copy code
 http://localhost:8080
+Technical Highlights
+Spring Security: Protects endpoints and manages authentication workflows.
+JWT Tokens in Cookies: Ensures secure and stateless sessions by storing JWT in HTTP-only cookies to prevent client-side tampering.
+Docker: Simplifies deployment by bundling the application into a container.
+Usage
+On user login, the application:
+Validates credentials.
+Generates a JWT token.
+Sends the token back in an HTTP-only cookie for security.
+Protected API endpoints require valid JWT cookies for access.
 Dependencies
 Java Spring Boot
+Spring Security
+JWT
 Maven
 Docker
-Usage
-The application validates user credentials and generates a JWT token upon successful login.
-API endpoints are protected and require a valid JWT for access.
 Contributing
-Feel free to submit issues or pull requests to enhance the functionality of the project.
+Contributions are welcome! Submit issues or pull requests to improve functionality or add new features.
 
 License
 This project is licensed under the Apache License 2.0. See the LICENSE file for details.
-
 
 
 
