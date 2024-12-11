@@ -4,6 +4,7 @@ import com.vipin.LoginPage.service.JWTService;
 import com.vipin.LoginPage.service.MyUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +25,44 @@ public class JwtFilter extends OncePerRequestFilter {
     ApplicationContext context;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-       String authHeader = request.getHeader("Authorization");
-       String token=null;
-       String username=null;
-       if (authHeader != null && authHeader.startsWith("Bearer ")) {
-           token = authHeader.substring(7);
-           username=jwtService.extractUserName(token);
-       }
-       if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-           UserDetails userDetails= context.getBean(MyUserDetailService.class).loadUserByUsername(username);
-           if(jwtService.validateToken(token,userDetails)){
-               UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-               authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-               SecurityContextHolder.getContext().setAuthentication(authToken);
-           }
-       }
-filterChain.doFilter(request, response);
+        // Extract cookies from the request
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        String username = null;
+
+        // Look for the specific cookie containing the JWT token
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwtToken".equals(cookie.getName())) { // Assume the cookie name is 'jwtToken'
+                    token = cookie.getValue(); // Extract the token value
+                    break;
+                }
+            }
+        }
+
+        // If the token is found in the cookie, proceed to validate
+        if (token != null) {
+            username = jwtService.extractUserName(token); // Extract the username from the token
+
+            // If username is valid and the SecurityContext does not already have an authenticated user
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = context.getBean(MyUserDetailService.class).loadUserByUsername(username);
+
+                // Validate the token
+                if (jwtService.validateToken(token, userDetails)) {
+                    // Create an authentication token
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // Set the authentication in the security context
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        }
+
+        // If no token is found or validation fails, continue without setting the context
+        filterChain.doFilter(request, response);
     }
+
 }

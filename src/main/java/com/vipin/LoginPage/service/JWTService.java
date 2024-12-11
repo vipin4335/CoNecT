@@ -42,7 +42,7 @@ public class JWTService {
                 .compact();
         System.out.println(token);
         // Create a cookie with the JWT token
-        Cookie cookie = new Cookie("jwt", token);
+        Cookie cookie = new Cookie("jwtToken", token);
         cookie.setHttpOnly(true); // Prevent access to the cookie via JavaScript
         cookie.setSecure(true); // Use only over HTTPS
         cookie.setPath("/"); // Cookie is accessible to the entire application

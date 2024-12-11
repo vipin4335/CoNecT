@@ -42,26 +42,6 @@ public class SecurityConfig {
 
     }
 
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user = User
-//                .withDefaultPasswordEncoder()
-//                .username("vipin")
-//                .password("12345")
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails admin = User
-//                .withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin")
-//                .roles("ADMIN")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
