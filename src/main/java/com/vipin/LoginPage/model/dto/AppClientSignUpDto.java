@@ -1,6 +1,6 @@
 package com.vipin.LoginPage.model.dto;
 
-import com.vipin.LoginPage.model.entities.GenderEnum;
+import com.vipin.LoginPage.model.entities.enums.GenderEnum;
 import lombok.Getter;
 import lombok.Setter;
 
