@@ -1,6 +1,7 @@
 package com.vipin.LoginPage.model.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity implements Serializable {
     private String username;
     private String email;

@@ -1,4 +1,4 @@
-package com.vipin.LoginPage.service;
+package com.vipin.LoginPage.service.Impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

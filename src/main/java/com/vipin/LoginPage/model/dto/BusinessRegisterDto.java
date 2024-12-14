@@ -1,6 +1,6 @@
 package com.vipin.LoginPage.model.dto;
 
-import com.vipin.LoginPage.model.entities.enums.GenderEnum;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AppClientSignUpDto {
+public class BusinessRegisterDto {
     private String username;
-    private String fullName;
-    private GenderEnum gender;
+    private String businessName;
+    private String address;
     private String email;
     private String password;
 }

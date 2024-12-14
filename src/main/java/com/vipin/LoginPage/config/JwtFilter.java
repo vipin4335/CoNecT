@@ -1,7 +1,7 @@
 package com.vipin.LoginPage.config;
 
-import com.vipin.LoginPage.service.JWTService;
-import com.vipin.LoginPage.service.MyUserDetailService;
+import com.vipin.LoginPage.JWT.JWTService;
+import com.vipin.LoginPage.Security.MyUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

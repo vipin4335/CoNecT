@@ -1,4 +1,4 @@
-package com.vipin.LoginPage.model;
+package com.vipin.LoginPage.Security;
 
 import com.vipin.LoginPage.model.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,18 +7,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class UserPrinciple implements UserDetails{
 
       private UserEntity user;
-    public UserPrinciple(UserEntity user) {
+      public UserPrinciple(UserEntity user) {
         this.user = user;
-    }
+      }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return  Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        return  user.getRoles().stream()
+                .map(role -> (GrantedAuthority) () -> "ROLE_" + role.getRole()) // Convert each role to GrantedAuthority
+                .collect(Collectors.toList());
+
     }
 
     @Override

@@ -1,24 +1,26 @@
-package com.vipin.LoginPage.service;
+package com.vipin.LoginPage.Security;
 
-import com.vipin.LoginPage.model.UserPrinciple;
 import com.vipin.LoginPage.model.entities.UserEntity;
 import com.vipin.LoginPage.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@AllArgsConstructor
 public class MyUserDetailService implements UserDetailsService {
-    @Autowired
-    private UserRepository repo;
+
+    private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-          UserEntity users=repo.findByUsername(username);
-          if(users==null){
-              throw new UsernameNotFoundException("user not found");
-          }
-      return new UserPrinciple(users);
+        UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("User with username " + username + " was not found."));
+
+        return new UserPrinciple(userEntity);
     }
 }

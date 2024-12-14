@@ -1,13 +1,14 @@
-package com.vipin.LoginPage.service;
+package com.vipin.LoginPage.service.Impl;
 
 import com.vipin.LoginPage.model.entities.UserRoleEntity;
 import com.vipin.LoginPage.model.entities.enums.UserRoleEnum;
 import com.vipin.LoginPage.repo.UserRoleRepository;
+import com.vipin.LoginPage.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class UserRoleServiceImpl implements UserRoleService{
+public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleRepository userRoleRepository;
 
     @Autowired
