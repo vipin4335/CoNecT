@@ -1,14 +1,12 @@
 package com.vipin.LoginPage.model.entities;
 
 import com.vipin.LoginPage.model.entities.enums.UserRoleEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class UserRoleEntity extends BaseEntity {
+
     private UserRoleEnum role;
 
 
@@ -20,4 +18,7 @@ public class UserRoleEntity extends BaseEntity {
     public void setRole(UserRoleEnum role) {
         this.role = role;
     }
+
+
+
 }

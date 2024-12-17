@@ -1,5 +1,9 @@
 package com.vipin.LoginPage.controller;
 
+import com.vipin.LoginPage.JWT.JWTUtility;
+import com.vipin.LoginPage.JWT.JwtRequest;
+import com.vipin.LoginPage.JWT.JwtResponse;
+import com.vipin.LoginPage.Security.CoNectUserDetailService;
 import com.vipin.LoginPage.model.dto.AppClientSignUpDto;
 import com.vipin.LoginPage.model.dto.BusinessRegisterDto;
 import com.vipin.LoginPage.model.entities.AppClient;
@@ -12,15 +16,32 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class UserController {
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final CoNectUserDetailService coNectUserDetailService;
+    private final JWTUtility jwtUtility;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService, AuthenticationManager authenticationManager,CoNectUserDetailService coNectUserDetailService,JWTUtility jwtUtility) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.coNectUserDetailService=coNectUserDetailService;
+        this.jwtUtility =jwtUtility;
+    }
 
     @PostMapping("/signup")
+    @CrossOrigin
     @Operation(summary =  "Create new client-user")
     public ResponseEntity<?>signup(@RequestBody AppClientSignUpDto user){
         if(this.userService.userExists(user.getUsername(),user.getEmail()))
@@ -36,10 +57,30 @@ public class UserController {
         if (this.userService.businessExists(business.getBusinessName()) || this.userService.userExists(business.getUsername(), business.getEmail())) {
             throw new RuntimeException("Username or email address already in use.");
         }
-        BusinessOwner businessOwner=this.userService.registerBusiness(business)
+        BusinessOwner businessOwner=this.userService.registerBusiness(business);
         return new ResponseEntity<BusinessOwner>(businessOwner,HttpStatus.CREATED);
     }
+    @PostMapping("/authentication")
+    @Operation(summary = "Authenticate user and get JWT Token")
+    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception
+    {
+       try{
+           authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                          jwtRequest.getUserName(),
+                           jwtRequest.getPassword()
+                   ));
+       }catch (BadCredentialsException e)
+       {
+           throw new BadCredentialsException("INVALID CREDENTIALS",e);
+       }
+       final UserDetails userDetails = coNectUserDetailService.loadUserByUsername(jwtRequest.getUserName());
+
+        final String token =
+                jwtUtility.generateToken(userDetails);
+        return new JwtResponse(token);
+    }
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Login based on user role after authentication",security = @SecurityRequirement(name = "bearerAuth"))
     public String logInUser(@RequestParam String username )
     {

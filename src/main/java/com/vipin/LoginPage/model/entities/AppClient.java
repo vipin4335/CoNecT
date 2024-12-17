@@ -16,7 +16,6 @@ import java.util.Set;
 public class AppClient extends UserEntity implements Serializable {
     private String fullName;
     private GenderEnum gender;
-    private Test testResults;
     private Set<Hobby> hobby_matches;
     private List<Hobby> saved_hobbies;
 
@@ -38,14 +37,7 @@ public class AppClient extends UserEntity implements Serializable {
     public void setGender(GenderEnum gender) {
         this.gender = gender;
     }
-    @OneToOne(cascade = CascadeType.REMOVE)
-    public Test getTestResults() {
-        return testResults;
-    }
 
-    public void setTestResults(Test testResults) {
-        this.testResults = testResults;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     public Set<Hobby> getHobby_matches() {

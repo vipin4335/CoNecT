@@ -28,7 +28,8 @@ public class SecurityConfig {
         http.
                 csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register","login")
+                        .requestMatchers("/register", "/signup", "/authenticate", "/notification", "/password", "/swagger-ui/index.html", "/v3/api-docs", "/configuration/ui", "/swagger-resources/**",
+                                "/configuration/security", "/swagger-ui/*", "/webjars/**", "/v3/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())

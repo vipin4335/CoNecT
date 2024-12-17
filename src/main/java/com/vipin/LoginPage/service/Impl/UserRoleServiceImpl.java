@@ -1,13 +1,15 @@
 package com.vipin.LoginPage.service.Impl;
 
+import com.vipin.LoginPage.handler.NotFoundException;
 import com.vipin.LoginPage.model.entities.UserRoleEntity;
 import com.vipin.LoginPage.model.entities.enums.UserRoleEnum;
 import com.vipin.LoginPage.repo.UserRoleRepository;
 import com.vipin.LoginPage.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleRepository userRoleRepository;
 

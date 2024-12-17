@@ -1,11 +1,13 @@
 package com.vipin.LoginPage.service.Impl;
 
+import com.vipin.LoginPage.handler.NotFoundException;
 import com.vipin.LoginPage.model.dto.AppClientSignUpDto;
 import com.vipin.LoginPage.model.dto.BusinessRegisterDto;
 import com.vipin.LoginPage.model.entities.AppClient;
 import com.vipin.LoginPage.model.entities.UserEntity;
 import com.vipin.LoginPage.model.entities.UserRoleEntity;
 import com.vipin.LoginPage.model.entities.BusinessOwner;
+import com.vipin.LoginPage.model.entities.enums.GenderEnum;
 import com.vipin.LoginPage.model.entities.enums.UserRoleEnum;
 import com.vipin.LoginPage.repo.AppClientRepository;
 import com.vipin.LoginPage.repo.BusinessOwnerRepository;
@@ -15,11 +17,13 @@ import com.vipin.LoginPage.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -40,7 +44,48 @@ public class UserServiceImpl implements UserService {
         this.appClientRepository=appClientRepository;
         this.businessOwnerRepository=businessOwnerRepository;
     }
+    @Override
+    public List<UserEntity> seedUsersAndUserRoles() {
+        System.out.println("started filling in service");
+        List<UserEntity> seededUsers = new ArrayList<>();
 
+        if (appClientRepository.count() == 0) {
+            UserRoleEntity userRoleEntity = new UserRoleEntity();
+            userRoleEntity.setRole(UserRoleEnum.USER);
+            UserRoleEntity userRole = this.userRoleService.saveRole(userRoleEntity);
+            UserRoleEntity userRoleEntity2 = new UserRoleEntity();
+            userRoleEntity2.setRole(UserRoleEnum.ADMIN);
+            UserRoleEntity adminRole = this.userRoleService.saveRole(userRoleEntity2);
+            AppClient user = new AppClient();
+            user.setUsername("user");
+            user.setEmail("n13@gmail.com");
+            user.setPassword(this.passwordEncoder.encode("topsecret"));
+            user.setRoles(List.of(userRole));
+            user.setFullName("Nikoleta Doykova");
+            user.setGender(GenderEnum.FEMALE);
+
+            appClientRepository.save(user);
+            seededUsers.add(user);
+
+
+        }
+        if (businessOwnerRepository.count() == 0) {
+            UserRoleEntity userRoleEntity3 = new UserRoleEntity();
+            userRoleEntity3.setRole(UserRoleEnum.BUSINESS_USER);
+            UserRoleEntity businessRole = this.userRoleService.saveRole(userRoleEntity3);
+            //business_user
+            BusinessOwner business_user = new BusinessOwner();
+            business_user.setUsername("business");
+            business_user.setEmail("n10@gamil.com");
+            business_user.setPassword(this.passwordEncoder.encode("topsecret"));
+            business_user.setRoles(List.of(businessRole));
+            business_user.setBusinessName("My Business name");
+            business_user.setAddress("My business address");
+            businessOwnerRepository.save(business_user);
+            seededUsers.add(business_user);
+        }
+        return seededUsers;
+    }
     @Override
     public AppClient register(AppClientSignUpDto user) {
         UserRoleEntity userRole = this.userRoleService.getUserRoleByEnumName(UserRoleEnum.USER);

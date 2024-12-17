@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 
 @MappedSuperclass
 @NoArgsConstructor
-public class BaseEntity {
-    protected Long id;
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
+    private Long id;
+
     public Long getId() {
         return id;
     }
