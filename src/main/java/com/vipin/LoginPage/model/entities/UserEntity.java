@@ -8,8 +8,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
@@ -17,9 +15,9 @@ public class UserEntity extends BaseEntity implements Serializable {
 
     private String username;
     private String email;
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles = new ArrayList<>();
     private String password;
-
 
     public UserEntity(String username, String email, List<UserRoleEntity> roles, String password) {
         this.username = username;
@@ -29,7 +27,6 @@ public class UserEntity extends BaseEntity implements Serializable {
     }
 
     public UserEntity() {
-
     }
 
     @Column(nullable = false, unique = true)
@@ -59,20 +56,12 @@ public class UserEntity extends BaseEntity implements Serializable {
         this.email = email;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+
     public List<UserRoleEntity> getRoles() {
         return roles;
     }
 
-
     public void setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
     }
-
-
 }

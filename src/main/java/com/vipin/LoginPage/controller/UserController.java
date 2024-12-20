@@ -24,7 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     private final UserService userService;
@@ -60,28 +60,28 @@ public class UserController {
         BusinessOwner businessOwner=this.userService.registerBusiness(business);
         return new ResponseEntity<BusinessOwner>(businessOwner,HttpStatus.CREATED);
     }
-    @PostMapping("/authentication")
+    @PostMapping("/authenticate")
     @Operation(summary = "Authenticate user and get JWT Token")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception
     {
        try{
            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                          jwtRequest.getUserName(),
+                          jwtRequest.getUsername(),
                            jwtRequest.getPassword()
                    ));
        }catch (BadCredentialsException e)
        {
            throw new BadCredentialsException("INVALID CREDENTIALS",e);
        }
-       final UserDetails userDetails = coNectUserDetailService.loadUserByUsername(jwtRequest.getUserName());
+       final UserDetails userDetails = coNectUserDetailService.loadUserByUsername(jwtRequest.getUsername());
 
         final String token =
                 jwtUtility.generateToken(userDetails);
         return new JwtResponse(token);
     }
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:4200")
     @Operation(summary = "Login based on user role after authentication",security = @SecurityRequirement(name = "bearerAuth"))
+    @CrossOrigin(origins = "http://localhost:4200")
     public String logInUser(@RequestParam String username )
     {
         UserEntity userByUsername= this.userService.findUserByUsername(username);

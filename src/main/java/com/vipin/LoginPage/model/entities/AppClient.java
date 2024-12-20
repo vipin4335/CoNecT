@@ -16,7 +16,10 @@ import java.util.Set;
 public class AppClient extends UserEntity implements Serializable {
     private String fullName;
     private GenderEnum gender;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Hobby> hobby_matches;
+    @ManyToMany
     private List<Hobby> saved_hobbies;
 
     @Column(name = "full_name", nullable = false)
@@ -48,7 +51,7 @@ public class AppClient extends UserEntity implements Serializable {
         this.hobby_matches = hobby_matches;
     }
 
-    @ManyToMany
+
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<Hobby> getSaved_hobbies() {
         return saved_hobbies;

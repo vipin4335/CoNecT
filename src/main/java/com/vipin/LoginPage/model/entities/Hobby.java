@@ -14,10 +14,16 @@ public class Hobby extends BaseEntity{
     private String slogan;
     private String intro;
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
+
     private String creator;
     private BigDecimal price;
+
+    @ManyToOne
     private Location location;
+
     private String profileImgUrl;
     private String galleryImgUrl1;
     private String galleryImgUrl2;
@@ -80,7 +86,7 @@ public class Hobby extends BaseEntity{
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+
     public Category getCategory() {
         return category;
     }
@@ -101,7 +107,7 @@ public class Hobby extends BaseEntity{
 
 
 
-    @ManyToOne
+
     public Location getLocation() {
         return location;
     }

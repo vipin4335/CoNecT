@@ -1,25 +1,29 @@
 package com.vipin.LoginPage.model.entities;
 
 
-import com.vipin.LoginPage.model.entities.enums.LocationEnum;
+import com.vipin.LoginPage.model.entities.enums.CategoryNameEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name = "categories")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Category extends BaseEntity{
-    private LocationEnum name;
+    private CategoryNameEnum name;
+
+    public Category(CategoryNameEnum categoryNameEnum) {
+        this.name = categoryNameEnum;
+    }
+
+    public Category() {
+    }
 
     @Column(unique = true)
     @Enumerated(EnumType.STRING)
-    public LocationEnum getName() {
+    public CategoryNameEnum getName() {
         return name;
     }
 
-    public void setName(LocationEnum name) {
+    public void setName(CategoryNameEnum name) {
         this.name = name;
     }
 }

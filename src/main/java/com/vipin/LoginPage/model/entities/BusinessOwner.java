@@ -10,6 +10,8 @@ import java.util.Set;
 public class BusinessOwner extends UserEntity {
     private String businessName;
     private String address;
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Hobby> hobby_offers;
 
     public BusinessOwner(String username, String email, List<UserRoleEntity> roles, String password, String businessName, String address) {
@@ -39,7 +41,7 @@ public class BusinessOwner extends UserEntity {
         this.address = address;
     }
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+
     public Set<Hobby> getHobby_offers() {
         return hobby_offers;
     }
