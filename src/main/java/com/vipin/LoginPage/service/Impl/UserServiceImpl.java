@@ -126,4 +126,9 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("Can not find the user with the Username");
     }
 
+    @Override
+    public AppClient findAppClientByUserName(String username) {
+        return this.appClientRepository.findByUsername(username).orElseThrow();
+    }
+
 }

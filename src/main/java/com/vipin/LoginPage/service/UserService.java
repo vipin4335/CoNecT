@@ -23,4 +23,5 @@ public interface UserService {
     UserEntity findUserByUsername(String username);
 
 
+    AppClient findAppClientByUserName(String username);
 }
